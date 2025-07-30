@@ -1,0 +1,36 @@
+services :
+
+  nginx :
+    container_name : nginx
+    build : ./requirements/nginx
+    volumes :
+      - ~/Desktop/inception/repo/srcs/requirements/nginx/log:/var/log/nginx
+      - ~/Desktop/inception/repo/srcs/requirements/wordpress/website:/var/www/html
+    networks :
+      - backend
+    ports :
+      - '443:443'
+    expose :
+      - '443'
+    depends_on :
+      - wordpress
+    restart : always
+
+  wordpress :
+    container_name : wordpress
+    depends_on :
+      - mariadb
+    build : ./requirements/wordpress
+    volumes :
+      - ~/Desktop/inception/repo/srcs/requireemnts/wordpress/website:/var/www/html
+    networks :
+      - backend
+    env_file :
+      .env
+
+  mariadb :
+
+
+
+networks :
+  backend :

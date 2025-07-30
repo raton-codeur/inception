@@ -1,9 +1,8 @@
--
 dans repo
 
 
 -
-nginx
+pour nginx
 
 build l'image :
 docker build -t nginx srcs/requirements/nginx
@@ -13,9 +12,35 @@ docker run -it --rm nginx
 
 supprimer l'image :
 docker rmi nginx
+-
+
+-
+pour mariadb
 
 
-redéfinir localhost pour qhauuy.42.fr
-dans /etc/hosts :
-127.0.0.1    qhauuy.42.fr
+build l'image :
+docker build -t mariadb srcs/requirements/mariadb
+
+lancer le conteneur en mode interactif :
+docker run -it --rm mariadb
+
+supprimer l'image :
+docker rmi mariadb
+-
+
+
+-
+pour wordpress
+
+
+build l'image :
+docker build -t wordpress srcs/requirements/wordpress
+
+lancer le conteneur en mode interactif :
+docker run -it --rm wordpress
+
+supprimer l'image :
+docker rmi wordpress
+-
+
 

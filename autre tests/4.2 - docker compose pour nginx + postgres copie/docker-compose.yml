@@ -1,0 +1,30 @@
+services :
+
+  web :
+
+    build : ./nginx_folder
+    image : nginx_image
+    container_name : nginx_container
+    depends_on :
+      - database
+    ports :
+      - 80:80
+    networks :
+      - my_network
+
+  database :
+    image : postgres
+    container_name : postgres_container
+    environment :
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+    volumes :
+      - ./postgres_volume:/var/lib/postgresql/data
+    networks :
+      - my_network
+
+networks :
+  my_network :
+    driver : bridge
+    name : my_network

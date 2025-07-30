@@ -1,0 +1,53 @@
+nom d'image
+nom du service
+
+network: host ou --link ou links
+interdit
+-
+dernière version stable de Debian
+version 12
+Bookworm
+10 juin 2023
+
+avant dernière version stable de Debian
+version 11
+Bullseye
+14 août 2021
+-
+
+-
+TLS
+
+/etc/nginx/ssl
+stocker le certificat X.509 et la clef privée
+
+on copier le fichier de config de nginx dans /etc/nginx/conf.d pour l'ajouter au fichier de conf qui existait déjà
+-
+
+volume WordPress monté dans /var/www/html
+
+volume MariaDB à monter dans /var/lib/mysql
+
+
+
+redéfinir qhauuy.42.fr → localhost = 127.0.0.1
+dans /etc/hosts de l'hôte :
+127.0.0.1    qhauuy.42.fr
+
+
+
+variables pour mariadb à rajouter au .env
+modifier le entrypoint.sh de mariadb
+SQL_DATABASE nom de la base de données
+SQL_USER utilisateur
+SQL_PASSWORD mot de passe de l'utilisateur
+SQL_ROOT_PASSWORD mot de passe de root
+
+
+version wordpress 6.5.0 qui est compatible php 7.4 (version utilisé par debian bullseye)
+
+
+variables pour wordpress
+modifier le entrypoint de wordpress
+
+

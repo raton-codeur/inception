@@ -1,0 +1,292 @@
+
+
+curl -k pour passer outre le SSL certificate problem: self signed certificate
+
+mariadb
+
+mysql -e → execute
+
+docker ps (-a) avec -q
+lister tous les ID (des conteneurs)
+pareil pour docker images -q
+
+docker run -e
+ou : --env
+docker run -e NOM=Quentin mon_image
+passer des variables d’environnement au conteneur
+
+
+-
+config de nginx
+
+location / {}
+pour toutes les requetes qui commencent par /
+
+location ~ \.php$ {}
+pour toutes les requetes qui finissent par .php
+~ indique une expression régulière
+on peut utiliser ~* pour dire qu'en plus on est insensible à la casse
+autre exemple, = /page.html ça veut dire "pour exactement cette requete" (ça annule l'effet préfixe)
+
+try_files $uri $uri/ =404;
+essaie les uri comme des fichiers et comme des dossiers, sinon retourne 404
+
+pour PHP :
+include snippets/fastcgi-php.conf;
+c'est le fichier de configuration standard de Nginx pour PHP
+puis :
+fastcgi_pass wordpress:9000;
+ça envoie le fichier .php via FastCGI à PHP-FPM dans le conteneur "wordpress" via le port 9000 pour qu'il puisse y etre interprété et il récupère le résultat HTML
+
+avant on avait CGI sur les serveur Web
+Common Gateway Interface
+→ un nouveau processus pour chaque script PHP
+maintenant : FastCGI
+version optimisée avec [un / pls] processus PHP toujours ouvert
+
+PHP-FPM
+FPM = FastCGI Process Manager
+c'est une implémentation de FastCGI pour PHP
+
+on peut mettre daemon off; dans la conf mais on préfère le mettre en ligne de commande pour être plus flexible
+nginx -g "daemon off;"
+g → global directive
+injecter une directive de configuration Nginx en ligne de commande, avant même que Nginx lise le fichier nginx.conf
+-
+
+
+
+redéfinir qhauuy.42.fr → localhost = 127.0.0.1
+dans /etc/hosts :
+127.0.0.1    qhauuy.42.fr
+
+
+
+
+
+Netscape en 1995
+→ SSL
+
+TLS par IETF en 1999
+
+
+-
+config de nginx
+
+
+server {
+    listen 80;
+    server_name localhost;
+    return 301 https://$host$request_uri;
+}
+
+$host
+variable nginx
+nom du domaine demandé
+
+$request_uri
+chemin complet demandé, dont paramètres
+
+
+fichier de config nginx de base dans /etc/nginx/nginx.conf
+on copie le nginx.conf du dossier nginx de l'hote
+dans le dossier /var/run/nginx du conteneur
+
+
+
+
+
+quand on monte un volume en bind mount on peut mettre :ro à la fin pour dire qu'on monte en read only
+
+
+gérer les volumes que docker gère
+docker volume ls
+docker volume inspect nom_volume
+docker volume rm nom_volume
+docker volume prune
+docker volume create nom_volume
+
+docker network ls
+docker network inspect nom_du_réseau
+
+
+
+
+
+
+-
+apt clean
+pour supprimer les fichiers .deb qui ont été installés
+
+rm -rf /var/lib/apt/lists/*
+pour supprimer les lists de paquets dispos
+-
+
+
+
+-
+TLS
+
+sécurisation de la communication entre client et serveur
+cryptographie asymétrique (clé publique et clé privée)
+
+l'idée c'est que quand un client se connecte à un serveur HTTPS, le serveur lui envoie un certificat X.509 qui contient une clé publique et une signature numérique faite par une CA (autorité de certification). il peut vérifier le serveur avec la signature et une liste de CA “de confiance” (il peut voir que le certificat vient d'une CA et que la clé publique appartient bien au domaine indiqué).
+le client chiffre son message avec la clé publique et le serveur peut le lire avec sa clé privée.
+
+
+pour obtenir le certificat X.509, on peut utiliser la commande openssl. elle permet de générer la paire de clés.
+
+
+créer une CSR (Certificate Signing Request) qui contient :
+- la clé publique
+- des infos d'identité
+- une signature numérique faite avec la clé privée (pour prouver qu'on l'a)
+on envoie ce CSR à une CA qui vérifie les infos et qui renvoie le X.509.
+
+commande :
+openssl req -new -key private.key -out request.csr
+ça crée la clé privée sous le nom private.key et le CSR sous request.csr
+
+
+on peut aussi faire des certificats X.509 auto-signés donc sans passer par une CA
+
+
+commande openssl
+
+req
+req -> créer des certificats, notamment auto-signés, au format PKCS#10
+
+-x509
+pour auto signé
+
+-nodes
+contourner la demande de mot de passe → mot de passe vide
+
+-out
+où enregistrer le certificat
+/etc/nginx/ssl/server.crt
+
+-keyout
+où enregistrer la clé
+/etc/nginx/ssl/private.key
+
+-subj "/C=FR/ST=Alsace/L=Mulhouse/O=42/OU=42Mulhouse/CN=qhauuy.42.fr"
+préremplir les champs de demande d'information supplémentaire
+country
+state
+localité
+organisation
+organisation unit
+common name
+user id (optionnel)
+
+
+on peut être un peu plus précis avec -newkey rsa:2048 pour garantir qu'on fait une nouvelle clé de telle longueur
+-
+
+
+-
+nc
+Netcat
+
+créer un client vers un serveur
+nc example.com 80
+taper ensuite la requete
+
+créer un serveur TCP
+nc -l 1234
+le terminal écoute sur le port 1234
+
+envoyer du texte au serveur TCP
+echo blabla | nc localhost 1234
+-
+
+
+
+-
+contenu du Dockerfile
+
+
+FROM ubuntu
+sur quoi on se base
+possible : FROM scratch
+
+WORKDIR
+se placer dans un dossier du futur conteneur
+si il n'existe pas il est crée
+de base on est à la racine du conteneur
+c'est aussi le répertoire par défaut lorsqu'on exécute le conteneur
+
+USER
+définir l'utilisateur courant
+
+COPY
+par exemple, pour copier un fichier de l'hôte dans le conteneur
+
+RUN
+lancer une commande
+
+ENV
+définir une variable d'environnement
+exemple :
+ENV VAR="salut"
+
+ARG
+définir une variable seulement pour le build
+elle sera supp quand l'image est crée, contrairement à ENV
+
+ENTRYPOINT
+point d'entrée dans le conteneur
+c'est la première commande exécutée quand le conteneur démarre
+exemple :
+ENTRYPOINT ["python", "app.py"]
+
+CMD
+les arguments par défaut pour ENTRYPOINT
+exemple :
+ENTRYPOINT ["python"]
+CMD ["script.py"]
+si on fait docker run mon_image, on exec python script.py
+et si on fait docker run mon_image autre_script.py, on exec python autre_script.py
+
+EXPOSE 80
+ça indique un port que le conteneur va normalement utiliser
+c'est juste une information, ça ne fait rien
+avec docker run -P on peut mapper automatiquement les ports vers un port de l'hote aléatoire (choisir avec -p c'est mieux)
+
+VOLUME
+exemple : VOLUME /data
+ça crée un volume anonyme monté sur le dossier /data du conteneur pour l'avoir de manière persistante
+un volume persiste même à la suppression du conteneur
+on peut nommer le volume avec docker run -v nom:/data
+
+rajouter des infos
+LABEL maintainer="quentin@example.com"
+LABEL version="1.0"
+LABEL description="Cette image sert à tester les labels Docker"
+-
+
+
+
+-
+créer sa propre image de conteneur
+Dockerfile
+→ organisation [du/des] futur· conteneur·
+
+
+création en couches
+nouvelle instruction = nouvelle couche
+une couche ≈ un snapshot du conteneur
+
+
+instructions de construction
+RUN, COPY, etc
+→ modifier le système de fichiers
+
+
+instructions de métadonnées
+EXPOSE (pour exposer des ports), MAINTAINER, ENV, ...
+infos en plus
+
+on peut aussi générer une image à partir d'un simple tar.gz avec la commande : docker image import
+-

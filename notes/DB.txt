@@ -1,0 +1,72 @@
+PostgreSQL
+
+serveur postgres
+
+gérer le serveur
+brew services (list)
+brew services start postgresql
+brew services stop postgresql
+
+
+client psql
+
+psql -U nom_utilisateur -d nom_base
+
+CREATE DATABASE nom_de_la_base;
+
+\c nom_de_la_base
+se connecter à
+
+en SQL
+créer et supprimer des tables
+insérer, lire, modifier des données
+
+
+autres commandes psql
+
+\l = \list
+lister les bases de données
+
+\dt
+lister les tables
+
+\d nom_table
+détailler la structure d'une table
+
+\q
+quitter
+
+
+/var/lib/postgresql/data
+dossier des bases de données
+
+
+
+
+MySQL
+Oracle
+mysql -u root -p
+
+MariaDB
+fork libre de MySQL créé par les fondateurs de MySQL
+mariadb -u root -p
+
+USE ma_base;
+CREATE DATABASE nom;
+SELECT * FROM utilisateurs;
+
+
+SHOW DATABASES;
+SHOW TABLES;
+EXIT;
+
+
+brew services
+brew services start / stop mysql
+
+
+mysqladmin ping
+tester le service
+
+mysql_safe lancer le service sans passer par systemd
+

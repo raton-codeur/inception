@@ -1,0 +1,14 @@
+les networks
+
+communication réseau entre conteneurs et avec l'extérieur
+plusieurs types, pour créer différentes topologies réseau
+commande : docker network
+
+lister les networks
+docker network ls
+
+créer un network
+docker network create <network_name>
+
+supprimer un network
+docker network rm <network_name>

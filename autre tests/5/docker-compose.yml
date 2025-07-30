@@ -1,0 +1,32 @@
+services :
+
+  web :
+    build : web_folder
+    image : web_image
+    container_name : web_container
+    depends_on :
+      - mariadb
+    ports :
+      - 443:443
+    networks :
+      - network
+    env_file : .env
+    volumes :
+      - ./web_folder/volume:/var/www/html
+
+  mariadb :
+    build : mariadb
+    image : mariadb_image
+    container_name : mariadb_container
+    volumes :
+      - ./mariadb/volume:/var/lib/mysql
+    networks :
+      - network
+    env_file : .env
+
+
+
+networks :
+  network :
+    driver : bridge
+    name : inception_network

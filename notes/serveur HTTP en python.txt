@@ -1,0 +1,33 @@
+créer un serveur en Python
+
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+server = HTTPServer(("localhost", 8000), SimpleHTTPRequestHandler)
+print("J'écoute sur le port 8000...")
+server.serve_forever()
+
+
+HTTPServer
+classe qui crée le serveur HTTP
+avec "localhost" et 8000 on pourra y accéder localement sur http://localhost:8000
+
+
+il crée une socket TCP
+connexion entre programmes par protocole TCP à travers Internet ou un réseau local
+une socket c'est l'interface logicielle utilisée par un programme pour écouter sur un port quand on est serveur / se connecter à un serveur quand on est client / envoyer et recevoir les données via TCP
+
+
+SimpleHTTPRequestHandler
+gestionnaire de requêtes
+il prend la main une fois qu'un client se connecte, lit les requetes et répond
+
+
+
+je crois que si il n'y a pas d'index.html le serveur montre une liste téléchargeable des fichiers du répertoire du script
+
+on peut personnaliser les réponses en créant des classes dérivées de SimpleHTTPRequestHandler
+class MonHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        self.wfile.write(b"<h1>Hello Quentin !</h1>")

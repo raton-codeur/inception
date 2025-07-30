@@ -1,0 +1,144 @@
+docker
+
+moteur de conteneurisation
+"porte conteneur"
+
+conteneurs
+partagent le même noyau système
+processus isolés
+réseau isolé
+fichiers isolés
+
+docker → conteneurisation
+hyperviseur → virtualisation
+
+
+cgroups
+control groups
+fonctionnalité linux
+gérer les ressources attribuées à chaque conteneur
+
+
+-
+Docker Engine
+composé de Docker Daemon (dockerd) et Docker Client (docker)
+
+Docker Daemon
+Processus principal (serveur) qui gère les conteneurs Docker sur l’hôte
+il expose une API REST
+
+Docker Client
+Interface en ligne de commande
+→ interagir avec le Docker Daemon
+-
+
+
+
+les images Docker
+archives immuables contenant tout ce dont une application a besoin pour fonctionner (code, bibliothèques, dépendances)
+
+
+
+Docker Swarm
+regrouper des machines hôte pour Docker en un cluster plus facile à orchestrer
+
+
+Open Container Initiative
+Runtime Specification (runtime-spec)
+Bundle Specification
+Config Specification
+Runtime and Lifecycle Specification
+Image Specification (image-spec)
+
+NGINX
+serveur Web ≈ serveur HTTP
+logiciel libre
+proxy inverse
+
+
+inspecter le·s processus d'un conteneur
+docker top + conteneur
+
+
+un serveur HTTP "écoute sur un port 80"
+il ouvre le port 80
+il attend qu'un client vienne
+il accepte la connexion, lit la requete HTTP, renvoie la réponse
+
+
+requete HTTP
+
+GET /index.html HTTP/1.1
+Host: www.example.com
+User-Agent: Mozilla/5.0
+Accept: text/html
+
+HTTP/1.1
+version du protocole
+
+accept c'est le type de contenu que le client accepte
+
+
+
+exemple d'une réponse
+
+HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: 1234
+
+<html>
+  <body><h1>Bienvenue Quentin !</h1></body>
+</html>
+
+
+les méthodes HTTP
+GET lire une ressource
+POST (envoyer un formulaire)
+PUT (envoyer une ressource)
+DELETE supprimer une ressource
+HEAD get sans le corps
+OPTIONS demander la liste des méthodes supportées
+
+-
+étiquetage Semver
+exemples : v1.0.0, v1.1.0
+
+sinon, avec la date ou des mot-clé comme dev, prod, staging
+-
+
+
+-
+sauvegarde
+
+créer une nouvelle image à partir d'un conteneur
+docker commit + conteneur + nouveau nom d'image
+ça fait un snapshot du conteneur
+ça ne prend pas les volumes
+
+on peut sauvegarder les volumes à l'aide d'un conteneur "sidecar"
+lancer le conteneur de base avec son volume
+lancer un deuxième conteneur avec --link et sauvegarder / restaurer
+-
+
+
+-
+registre OCI
+Open Container Initiative
+Docker Hub, surtout
+
+s'identifier pour Docker Hub
+docker login
+
+push une image sur Docker Hub
+tager l'image avec son login Docker Hub + nom du dépot
+docker tag + image + login/nom_image_depot
+puis docker push login/nom_image_depot
+
+on peut aussi faire un registre d'image privé avec l'image registry
+-
+
+
+-
+distribution Alpine Linux
+gestion de sshd avec rc-service sshd [start / stop / restart]
+-

@@ -1,0 +1,62 @@
+docker compose
+↔︎ application multi-conteneurs
+
+docker-compose.yml
+format YAML
+
+sections : services, volumes, networks
+définir les services (conteneurs), leurs liens de réseau et leurs volumes
+
+docker-compose [up / down]
+[démarrer / arrêter et supprimer] les services
+
+
+
+mettre les services en réseau
+il y a un réseau bridge qui est créé automatiquement entre tous les services du docker compose sous le même nom que le projet → réseau local privé
+
+section networks pour faire des réseaux personnalisés
+
+exemple :
+services:
+  web:
+    image: nginx
+    networks:
+      - front
+  app:
+    build: ./app
+    networks:
+      - front
+      - back
+  db:
+    image: postgres
+    networks:
+      - back
+networks:
+  front:
+  back:
+
+
+
+
+docker compose build
+ça crée juste les images
+c'est fait par docker compose up dans tous les cas
+mais docker compose up ne refait pas les images si elles sont déjà construites, même si on a modif quelque chose dans le Dockerfile
+
+docker compose logs
+docker compose ps
+docker compose top
+
+docker compose stat
+voir les usages des ressources
+
+docker compose stop
+arrêter les conteneurs
+
+docker compose down
+supprimer toutes les ressources (conteneurs, réseaux)
+on peut rajouter -v pour les volumes aussi
+
+
+
