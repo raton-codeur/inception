@@ -1,12 +1,25 @@
+# docker build -t web_image web_folder
+# docker run -it --name web_container -p 443:443 web_image bash
+
+# docker build -t database_image database_folder
+# docker run -it --name database_container -p 3306:3306 -v ./database_folder/database_volume:/var/lib/mysql database_image bash
+
+# docker compose up -d
+
+
 test :
-	docker build -t wordpress srcs/requirements/wordpress && docker run -it --rm wordpress
+	docker compose up -d
+
+
+# docker run --rm -it web_image bash
+# docker run --rm -it database_image bash
+
+# docker compose exec web bash
+# docker compose exec mariadb bash
+
+# https://localhost
 
 clean :
-	docker rmi wordpress
+	docker compose down --timeout 0; docker stop mariadb_container; docker stop nginx_container; docker stop wordpress_container; docker rm mariadb_container; docker rm nginx_container; docker rm wordpress_container; docker rmi mariadb_image; docker rmi nginx_image; docker rmi wordpress_image; rm -rf mariadb/volume/*; rm -rf web_folder/volume/*
 
-
-all :
-	echo "127.0.0.1 qhauuy.42.fr" >> /etc/hosts
-	echo "127.0.0.1 www.qhauuy.42.fr" >> /etc/hosts
-	docker compose -f srcs/docker-composer.yml build
 

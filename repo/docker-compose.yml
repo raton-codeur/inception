@@ -1,0 +1,41 @@
+services :
+  nginx :
+    build : nginx
+    image : nginx_image
+    container_name : nginx_container
+    restart : on-failure
+    networks :
+      - network
+    ports :
+      - 443:443
+    volumes :
+      - ./wordpress/volume:/var/www/html
+    depends_on :
+      - wordpress
+
+  wordpress :
+    build : wordpress
+    image : wordpress_image
+    container_name : wordpress_container
+    restart : on-failure
+    networks :
+      - network
+    volumes :
+      - ./wordpress/volume:/var/www/html
+    depends_on :
+      - mariadb
+
+  mariadb :
+    build : mariadb
+    image : mariadb_image
+    container_name : mariadb_container
+    restart : on-failure
+    networks :
+      - network
+    volumes :
+      - ./mariadb/volume:/var/lib/mysql
+
+networks :
+  network :
+    driver : bridge
+    name : inception_network
