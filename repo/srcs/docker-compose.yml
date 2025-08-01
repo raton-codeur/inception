@@ -1,0 +1,38 @@
+services :
+  nginx :
+    build : requirements/nginx
+    restart : on-failure
+    networks :
+      - network
+    ports :
+      - 443:443
+    volumes :
+      - $WORDPRESS_HOST_PATH:$WORDPRESS_CONTAINER_PATH
+    depends_on :
+      - wordpress
+
+  wordpress :
+    build : requirements/wordpress
+    restart : on-failure
+    networks :
+      - network
+    volumes :
+      - $WORDPRESS_HOST_PATH:$WORDPRESS_CONTAINER_PATH
+    env_file :
+      - ../secrets/env.txt
+      - .env
+    depends_on :
+      - mariadb
+
+  mariadb :
+    build : requirements/mariadb
+    restart : on-failure
+    networks :
+      - network
+    volumes :
+      - $DB_HOST_PATH:$DB_CONTAINER_PATH
+    env_file :
+      - ../secrets/env.txt
+
+networks :
+  network :

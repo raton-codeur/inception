@@ -1,25 +1,6 @@
-# docker build -t web_image web_folder
-# docker run -it --name web_container -p 443:443 web_image bash
-
-# docker build -t database_image database_folder
-# docker run -it --name database_container -p 3306:3306 -v ./database_folder/database_volume:/var/lib/mysql database_image bash
-
-# docker compose up -d
-
-
 test :
-	docker compose up -d
-
-
-# docker run --rm -it web_image bash
-# docker run --rm -it database_image bash
-
-# docker compose exec web bash
-# docker compose exec mariadb bash
-
-# https://localhost
+	cd srcs && docker compose up -d
 
 clean :
-	docker compose down --timeout 0; docker stop mariadb_container; docker stop nginx_container; docker stop wordpress_container; docker rm mariadb_container; docker rm nginx_container; docker rm wordpress_container; docker rmi mariadb_image; docker rmi nginx_image; docker rmi wordpress_image; rm -rf mariadb/volume/*; rm -rf web_folder/volume/*
-
-
+	cd srcs && docker compose down --timeout 0 && docker rmi inception-mariadb && docker rmi inception-wordpress && docker rmi inception-nginx
+	rm -rf ../volumes/*
