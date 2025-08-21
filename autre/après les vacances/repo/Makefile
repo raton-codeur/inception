@@ -10,4 +10,4 @@ test :
 	cd srcs && docker compose up -d
 
 clean :
-	cd srcs; docker compose down --timeout 0; docker image prune -f -a; rm -rf ../volumes/*
+	cd srcs && docker compose down --timeout 0 && docker image prune -f -a && rm -rf ../volumes/*
