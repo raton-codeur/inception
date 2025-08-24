@@ -2,8 +2,7 @@ FROM debian:bullseye
 
 ARG SSL_CONTAINER_PATH DOMAIN_NAME WORDPRESS_CONTAINER_PATH
 
-RUN apt update && \
-	apt install -y nginx openssl
+RUN apt update && apt install -y nginx openssl
 
 RUN mkdir -p $SSL_CONTAINER_PATH && \
 	openssl req -x509 -nodes \
@@ -18,8 +17,11 @@ RUN apt update && \
 	wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
 	chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 
+RUN apt update && apt install -y mariadb-server
+
 COPY entrypoint.sh /
-COPY wordpress.conf /etc/php/7.4/fpm/pool.d/www.conf
 COPY nginx.conf /etc/nginx/conf.d/https.conf
+COPY wordpress.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY mariadb.conf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 ENTRYPOINT ["bash", "/entrypoint.sh"]

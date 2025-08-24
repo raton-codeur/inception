@@ -9,8 +9,10 @@ services :
     ports :
       - 443:443
       - 9000:9000
+      - 3306:3306
     env_file :
     - .env
     - $CREDENTIALS_HOST_PATH
     volumes :
     - $WORDPRESS_HOST_PATH:$WORDPRESS_CONTAINER_PATH
+    - $DB_HOST_PATH:$DB_CONTAINER_PATH
