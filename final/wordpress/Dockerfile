@@ -8,6 +8,7 @@ RUN apt update && \
 	chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 
 COPY entrypoint.sh /
+
 COPY wordpress.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 ENTRYPOINT ["bash", "/entrypoint.sh"]

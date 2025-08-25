@@ -17,6 +17,7 @@ services :
       - $CREDENTIALS_HOST_PATH
     volumes :
       - $WORDPRESS_HOST_PATH:$WORDPRESS_CONTAINER_PATH
+    depends_on :
 
   mariadb :
     build : mariadb
