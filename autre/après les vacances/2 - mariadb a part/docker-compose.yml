@@ -1,0 +1,30 @@
+services :
+  autres_services :
+    build :
+      context : autres_services
+      args :
+        SSL_CONTAINER_PATH : $SSL_CONTAINER_PATH
+        DOMAIN_NAME : $DOMAIN_NAME
+        WORDPRESS_CONTAINER_PATH : $WORDPRESS_CONTAINER_PATH
+    ports :
+      - 443:443
+      - 9000:9000
+    env_file :
+      - .env
+      - $CREDENTIALS_HOST_PATH
+    volumes :
+      - $WORDPRESS_HOST_PATH:$WORDPRESS_CONTAINER_PATH
+      - $DB_HOST_PATH:$DB_CONTAINER_PATH
+  mariadb :
+    build :
+      context : mariadb
+      args :
+        SSL_CONTAINER_PATH : $SSL_CONTAINER_PATH
+        DOMAIN_NAME : $DOMAIN_NAME
+        WORDPRESS_CONTAINER_PATH : $WORDPRESS_CONTAINER_PATH
+    env_file :
+      - .env
+      - $CREDENTIALS_HOST_PATH
+    volumes :
+      - $WORDPRESS_HOST_PATH:$WORDPRESS_CONTAINER_PATH
+      - $DB_HOST_PATH:$DB_CONTAINER_PATH
