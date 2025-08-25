@@ -1,11 +1,7 @@
-
-
-
 if [ ! -d $DB_CONTAINER_PATH/$DATABASE_NAME ]
 then
 	mariadb-install-db
 	service mariadb start
-	sleep 2
 	mariadb -e "
 		CREATE DATABASE $DATABASE_NAME;
 		CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_USER_PASSWORD';
@@ -14,7 +10,4 @@ then
 		"
 	mysqladmin shutdown
 fi
-
-mariadbd-safe &
-
-tail -f
+exec mariadbd-safe

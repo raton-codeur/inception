@@ -9,6 +9,9 @@ services :
       - 443:443
     volumes :
       - $WORDPRESS_HOST_PATH:$WORDPRESS_CONTAINER_PATH
+    depends_on :
+      - wordpress
+    restart : on-failure
 
   wordpress :
     build : wordpress
@@ -18,6 +21,9 @@ services :
     volumes :
       - $WORDPRESS_HOST_PATH:$WORDPRESS_CONTAINER_PATH
     depends_on :
+      mariadb :
+        condition : service_healthy
+    restart : on-failure
 
   mariadb :
     build : mariadb
@@ -26,3 +32,8 @@ services :
       - $CREDENTIALS_HOST_PATH
     volumes :
       - $DB_HOST_PATH:$DB_CONTAINER_PATH
+    restart : on-failure
+    healthcheck :
+      test: ["CMD", "pgrep", "mariadbd-safe"]
+      interval : 1s
+      retries : 20

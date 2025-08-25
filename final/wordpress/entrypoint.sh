@@ -1,8 +1,3 @@
-
-
-
-sleep 5
-
 cd $WORDPRESS_CONTAINER_PATH
 if [ ! -f index.php ]
 then
@@ -30,7 +25,4 @@ then
 		--user_pass=$WORDPRESS_USER_PASSWORD
 	wp theme install inspiro --activate --allow-root
 fi
-
-php-fpm7.4 &
-
-tail -f
+php-fpm7.4 -F

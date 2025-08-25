@@ -8,4 +8,4 @@ ps :
 	docker top inception-my_service-1
 
 bash :
-	docker compose exec my_service bash
+	docker compose exec nginx bash
