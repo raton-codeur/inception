@@ -1,0 +1,7 @@
+
+dans /etc/hosts :
+127.0.0.1 qhauuy.42.fr
+
+position volumes dans makefile
+
+modif les variables HOST_PATH dans .env

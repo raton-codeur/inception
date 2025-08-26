@@ -1,0 +1,62 @@
+services :
+  nginx :
+    build : requirements/nginx
+    container_name : nginx_container
+    ports :
+      - 443:443
+    volumes :
+      - wordpress:$WORDPRESS_CONTAINER_PATH
+    networks :
+      - network
+    depends_on :
+      - wordpress
+    restart : on-failure
+
+  wordpress :
+    build : requirements/wordpress
+    container_name : wordpress_container
+    env_file :
+      - .env
+      - $CREDENTIALS_HOST_PATH
+    volumes :
+      - wordpress:$WORDPRESS_CONTAINER_PATH
+    networks :
+      - network
+    depends_on :
+      mariadb :
+        condition : service_healthy
+    restart : on-failure
+
+  mariadb :
+    build : requirements/mariadb
+    container_name : mariadb_container
+    env_file :
+      - .env
+      - $CREDENTIALS_HOST_PATH
+    volumes :
+      - database:$DB_CONTAINER_PATH
+    networks :
+      - network
+    restart : on-failure
+    healthcheck :
+      test: ["CMD", "pgrep", "mariadbd-safe"]
+      interval : 1s
+      retries : 20
+
+networks :
+  network :
+
+volumes :
+  wordpress :
+    driver : local
+    driver_opts :
+      type : none
+      o : bind
+      device : $WORDPRESS_HOST_PATH
+
+  database :
+    driver : local
+    driver_opts :
+      type : none
+      o : bind
+      device : $DB_HOST_PATH
