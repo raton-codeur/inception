@@ -17,8 +17,7 @@ services :
     container_name : wordpress_container
     env_file :
       - .env
-    secrets :
-      - credentials
+      - $CREDENTIALS_HOST_PATH
     volumes :
       - wordpress:$WORDPRESS_CONTAINER_PATH
     networks :
@@ -33,10 +32,9 @@ services :
     container_name : mariadb_container
     env_file :
       - .env
-    secrets :
-      - credentials
+      - $CREDENTIALS_HOST_PATH
     volumes :
-      - database:$DB_CONTAINER_PATH
+      - database:$DATABASE_CONTAINER_PATH
     networks :
       - network
     restart : on-failure
@@ -61,8 +59,4 @@ volumes :
     driver_opts :
       type : none
       o : bind
-      device : $DB_HOST_PATH
-
-secrets :
-  credentials :
-    file : $CREDENTIALS_HOST_PATH
+      device : $DATABASE_HOST_PATH
