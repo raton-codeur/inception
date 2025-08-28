@@ -1,0 +1,27 @@
+services :
+  my_service :
+    build : my_service
+    container_name : my_service_container
+    ports :
+      - 443:443
+    env_file :
+      - .env
+    volumes :
+      - wordpress:$WORDPRESS_CONTAINER_PATH
+      - database:$DATABASE_CONTAINER_PATH
+
+
+volumes :
+  wordpress :
+    driver : local
+    driver_opts :
+      type : none
+      o : bind
+      device : $WORDPRESS_HOST_PATH
+
+  database :
+    driver : local
+    driver_opts :
+      type : none
+      o : bind
+      device : $DATABASE_HOST_PATH
