@@ -11,6 +11,10 @@ clean :
 	docker volume rm $$(docker volume ls -q); \
 	docker network rm $$(docker network ls -q)
 
+kill :
+	docker compose -f srcs/docker-compose.yml down --timeout 0; make clean
+
+
 top/% :
 	docker top $*
 
