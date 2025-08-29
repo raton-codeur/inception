@@ -22,6 +22,6 @@ then
 		$WORDPRESS_USER_EMAIL \
 		--role=editor \
 		--user_pass=$WORDPRESS_USER_PASSWORD
-	wp theme install neve --allow-root --activate
+	wp theme install inspiro --allow-root --activate
 fi
 php-fpm7.4 -F
